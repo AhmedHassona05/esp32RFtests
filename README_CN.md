@@ -1,72 +1,72 @@
-﻿# A2DP SOURCE Stream
+# A2DP SOURCE 流例程
 
-- [中文版本](./README_CN.md)
-- Basic Example: ![alt text](../../../docs/_static/level_basic.png "Basic Example")
+- [English Version](./README.md)
+- 例程难度：![alt text](../../../docs/_static/level_basic.png "初级")
 
 
-## Example Brief
+## 例程简介
 
-This example demonstrates how a Classic Bluetooth A2DP SOURCE distributes audio steams. It can be used as an reference to develop portable audio players or microphone applications that transmit audio streams to A2DP SINK.
+本例程是 A2DP SOURCE 例程，使用经典蓝牙的 A2DP SOURCE 角色进行音频流分发，应用程序可以利用这个例子来实现便携式音频播放器或麦克风应用，将音频流传输到 A2DP SINK 接收设备。
 
-The complete pipeline of A2DP SOURCE is as follows:
+A2DP SOURCE 的完整管道如下：
 
-```
+```c
 sdcard ---> fatfs_stream ---> mp3_decoder ---> bt_stream ---> aadp_source
 ```
 
-As the A2DP SOURCE role, the device in this example needs to be paired and connected with A2DP SINK (usually a Bluetooth speaker) in order to play the distributed audio.
+本例程作为 A2DP 的 SOURCE 角色，需要和 A2DP SINK（一般是蓝牙音箱）配对连接，用来播放下发的音频。
 
 
-## Environment Setup
+## 环境配置
 
 
-#### Hardware Required
+### 硬件要求
 
-This example runs on the boards that are marked with a green checkbox in the [table](../../README.md#compatibility-of-examples-with-espressif-audio-boards). Please remember to select the board in menuconfig as discussed in Section [Configuration](#configuration) below.
-
-
-## Build and Flash
-
-### Default IDF Branch
-
-This example supports IDF release/v5.0 and later branches. By default, it runs on ADF's built-in branch `$ADF_PATH/esp-idf`.
+本例程支持的开发板在 `$ADF_PATH/examples/README_CN.md` 文档中[例程与乐鑫音频开发板的兼容性表格](../../README_CN.md#例程与乐鑫音频开发板的兼容性)中有标注，表格中标有绿色复选框的开发板均可运行本例程。请记住，如下面的 [配置](#配置) 一节所述，可以在 `menuconfig` 中选择开发板。
 
 
-### Configuration
+## 编译和下载
 
-In this example, you need to prepare an microSD card with an audio file in MP3 format named `test.mp3`, and insert the card into the development board.
+### IDF 默认分支
 
-The default board for this example is `ESP32-Lyrat V4.3`, if you need to run this example on other development boards, select the board in menuconfig, such as `ESP32-Lyrat-Mini V1.1`.
+本例程支持 IDF release/v5.0 及以后的分支，例程默认使用 ADF 的內建分支 `$ADF_PATH/esp-idf`。
+
+
+### 配置
+
+本例程需要准备一张 microSD 卡，并自备一首 MP3 格式的音频文件，命名为 `test.mp3`，然后把 microSD 卡插入开发板备用。
+
+本例程默认选择的开发板是 `ESP32-Lyrat V4.3`，如果需要在其他的开发板上运行此例程，则需要在 menuconfig 中选择开发板的配置，例如选择 `ESP32-Lyrat-Mini V1.1`。
 
 ```
 menuconfig > Audio HAL > ESP32-Lyrat-Mini V1.1
 ```
 
-You need to configure the name of the A2DP SINK device in menuconfig in order to connect to it.
+本例程需要配置 A2DP SINK 角色的设备名，用来连接蓝牙 SINK 设备，在下面的 menuconfig 菜单中配置。
 
 ```
 menuconfig > Example Configuration > BT remote device name
 ```
 
-### Build and Flash
+### 编译和下载
 
-Build the project and flash it to the board, then run monitor tool to view serial output (replace `PORT` with your board's serial port name):
+请先编译版本并烧录到开发板上，然后运行 monitor 工具来查看串口输出 (替换 PORT 为端口名称)：
 
 ```
 idf.py -p PORT flash monitor
 ```
 
-To exit the serial monitor, type ``Ctrl-]``.
+退出调试界面使用 ``Ctrl-]``。
 
-See [ESP-IDF Programming Guide](https://docs.espressif.com/projects/esp-idf/en/release-v5.3/esp32/index.html) for full steps to configure and build an ESP-IDF project.
-
-
-## How to Use the Example
+有关配置和使用 ESP-IDF 生成项目的完整步骤，请参阅 [《ESP-IDF 编程指南》](https://docs.espressif.com/projects/esp-idf/zh_CN/release-v5.3/esp32/index.html)。
 
 
-### Example Functionality
+## 如何使用例程
 
-- After the example starts running, the development board will scan the surrounding Bluetooth devices for the device with the name set in menuconfig, and connect to it.
+
+### 功能和用法
+
+- 例程开始运行后，开发板会扫描周围的蓝牙设备，试图匹配 `menuconfig` 中设置的蓝牙设备名进行连接，打印如下：
 
 ```c
 entry 0x400806f4
@@ -233,9 +233,9 @@ I (8074) BLUETOOTH_SOURCE_EXAMPLE: a2dp connecting to peer: Heap Corrupt
 ```
 
 
-### Example Log
+### 日志输出
 
-A complete log is as follows:
+以下为本例程的完整日志。
 
 ```c
 entry 0x400806f4
@@ -394,17 +394,17 @@ I (8074) BLUETOOTH_SOURCE_EXAMPLE: a2dp connecting to peer: Heap Corrupt
 ```
 
 
-## Troubleshooting
+## 故障排除
 
-- Currently, ESP32 A2DP supports the audio codec SBC. The SBC audio stream is encoded by PCM data, which is usually 44.1 kHz sampling rate, dual-channel, and 16-bit sampling data. Other SBC configurations can also be supported, but additional modifications to the protocol stack are required.
-- Currently, ESP32 A2DP SOURCE can only connect to one remote A2DP SINK device at most. In addition, A2DP SOURCE cannot be used with A2DP SINK at the same time, but it can be used with other configuration files, such as SPP and HFP.
+- 目前阶段，ESP32 A2DP 支持的音频编解码器是 SBC。SBC 音频流由 PCM 数据编码，通常格式为 44.1 kHz 采样率、双通道、16 位采样数据。也可以支持其他 SBC 配置，但需要对协议堆栈进行额外修改。
+- 当前使用限制，ESP32 A2DP SOURCE 最多只能支持与一个远程 A2DP SINK 设备的连接。此外，A2DP SOURCE 不能与 A2DP SINK 同时使用，但可以与其他配置文件一起使用，例如 SPP 和 HFP。
 
 
-## Technical Support and Feedback
+## 技术支持
 
-Please use the following feedback channels:
+请按照下面的链接获取技术支持：
 
-* For technical queries, go to the [esp32.com](https://esp32.com/viewforum.php?f=20) forum
-* For a feature request or bug report, create a [GitHub issue](https://github.com/espressif/esp-adf/issues)
+- 技术支持参见 [esp32.com](https://esp32.com/viewforum.php?f=20) 论坛
+- 故障和新功能需求，请创建 [GitHub issue](https://github.com/espressif/esp-adf/issues)
 
-We will get back to you as soon as possible.
+我们会尽快回复。
